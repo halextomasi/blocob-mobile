@@ -2,7 +2,7 @@ import React from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 import { ExpoLinksView } from '@expo/samples';
 
-export default function ChatScreen() {
+export default function MainScreen() {
     return (
         <ScrollView style={styles.container}>
             {/**
@@ -14,8 +14,8 @@ export default function ChatScreen() {
     );
 }
 
-ChatScreen.navigationOptions = {
-    title: 'Links'
+MainScreen.navigationOptions = {
+    title: 'Calendário'
 };
 
 const styles = StyleSheet.create({

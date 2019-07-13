@@ -2,20 +2,22 @@ import React from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 import { ExpoLinksView } from '@expo/samples';
 
-export default function BuildingScreen() {
+export default function MainScreen() {
     return (
         <ScrollView style={styles.container}>
-            {/**
-       * Go ahead and delete ExpoLinksView and replace it with your content;
-       * we just wanted to provide you with some helpful links.
-       */}
+            {
+                /**
+                * Go ahead and delete ExpoLinksView and replace it with your content;
+                * we just wanted to provide you with some helpful links.
+                */
+            }
             <ExpoLinksView />
         </ScrollView>
     );
 }
 
-BuildingScreen.navigationOptions = {
-    title: 'Prédio'
+MainScreen.navigationOptions = {
+    title: 'Apartamento Sato'
 };
 
 const styles = StyleSheet.create({

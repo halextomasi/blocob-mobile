@@ -10,9 +10,9 @@ import {
   View,
 } from 'react-native';
 
-import { MonoText } from '../components/StyledText';
+import { MonoText } from '../../components/StyledText';
 
-export default function HomeScreen() {
+export default function MainScreen() {
   return (
     <View style={styles.container}>
       <ScrollView
@@ -20,11 +20,11 @@ export default function HomeScreen() {
         contentContainerStyle={styles.contentContainer}>
         <View style={styles.welcomeContainer}>
           <Image
-            source={
-              __DEV__
-                ? require('../assets/images/robot-dev.png')
-                : require('../assets/images/robot-prod.png')
-            }
+            // source={
+            //   __DEV__
+            //     ? require('../../assets/images/robot-dev.png')
+            //     : require('../../assets/images/robot-prod.png')
+            // }
             style={styles.welcomeImage}
           />
         </View>
@@ -36,7 +36,7 @@ export default function HomeScreen() {
 
           <View
             style={[styles.codeHighlightContainer, styles.homeScreenFilename]}>
-            <MonoText>screens/HomeScreen.js</MonoText>
+            {/* <MonoText>/screens/HomeScreen.js</MonoText> */}
           </View>
 
           <Text style={styles.getStartedText}>
@@ -61,7 +61,7 @@ export default function HomeScreen() {
         <View
           style={[styles.codeHighlightContainer, styles.navigationFilename]}>
           <MonoText style={styles.codeHighlightText}>
-            navigation/MainTabNavigator.js
+            {/* navigation/MainTabNavigator.js */}
           </MonoText>
         </View>
       </View>
@@ -69,7 +69,7 @@ export default function HomeScreen() {
   );
 }
 
-HomeScreen.navigationOptions = {
+MainScreen.navigationOptions = {
   header: null,
 };
 
