@@ -1,15 +1,23 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-navigation';
+import { ScrollView, StyleSheet } from 'react-native';
+import { ExpoLinksView } from '@expo/samples';
 
 export default function MainScreen() {
     return (
-        <SafeAreaView style={styles.container} />
+        <ScrollView style={styles.container}>
+            {
+                /**
+                * Go ahead and delete ExpoLinksView and replace it with your content;
+                * we just wanted to provide you with some helpful links.
+                */
+            }
+            <ExpoLinksView />
+        </ScrollView>
     );
 }
 
 MainScreen.navigationOptions = {
-    header: null
+    title: 'Apartamento Sato'
 };
 
 const styles = StyleSheet.create({
