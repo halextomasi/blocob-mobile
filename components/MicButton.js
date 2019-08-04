@@ -3,20 +3,6 @@ import React, { Component } from 'react';
 import { TouchableOpacity, Animated, Easing, View, StyleSheet } from 'react-native';
 import FAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 
-// constants
-import {
-    center,
-    topCenter,
-    topLeft,
-    topRight,
-    bigBubbleSize,
-    smallBubbleSize,
-    bubbleColor,
-    animateTime,
-    easingType,
-    delay,
-} from './constants';
-
 // This is the add button that appears in the middle along with
 // other buttons and their animations
 class MicButton extends Component {
@@ -32,7 +18,7 @@ class MicButton extends Component {
         };
     }
 
-    handleAddButtonPress = () => {
+    handleButtonPress = () => {
         let { pressed } = this.state;
         if (pressed) {
             this.animateReverse(0);
@@ -44,13 +30,13 @@ class MicButton extends Component {
     }
 
     animate = (toValue) => {
-        Animated.stagger(delay, [
+        Animated.stagger(Easing.delay, [
             Animated.parallel([
                 Animated.timing(
                     this.animatedValue,
                     {
                         toValue,
-                        duration: animateTime,
+                        duration: Easing.animateTime,
                         easing: Easing.exp,
                     }
                 ),
@@ -58,8 +44,8 @@ class MicButton extends Component {
                     this.topLeftValue,
                     {
                         toValue,
-                        duration: animateTime,
-                        easing: easingType,
+                        duration: Easing.animateTime,
+                        easing: Easing.easingType,
                     }
                 ),
             ]),
@@ -67,37 +53,37 @@ class MicButton extends Component {
                 this.topCenterValue,
                 {
                     toValue,
-                    duration: animateTime,
-                    easing: easingType,
+                    duration: Easing.animateTime,
+                    easing: Easing.easingType,
                 }
             ),
             Animated.timing(
                 this.topRightValue,
                 {
                     toValue,
-                    duration: animateTime,
-                    easing: easingType,
+                    duration: Easing.animateTime,
+                    easing: Easing.easingType,
                 }
             ),
         ]).start();
     }
 
     animateReverse = (toValue) => {
-        Animated.stagger(delay, [
+        Animated.stagger(Easing.delay, [
             Animated.timing(
                 this.topRightValue,
                 {
                     toValue,
-                    duration: animateTime,
-                    easing: easingType,
+                    duration: Easing.animateTime,
+                    easing: Easing.easingType,
                 }
             ),
             Animated.timing(
                 this.topCenterValue,
                 {
                     toValue,
-                    duration: animateTime,
-                    easing: easingType,
+                    duration: Easing.animateTime,
+                    easing: Easing.easingType,
                 }
             ),
             Animated.parallel([
@@ -105,16 +91,16 @@ class MicButton extends Component {
                     this.animatedValue,
                     {
                         toValue,
-                        duration: animateTime,
-                        easing: easingType,
+                        duration: Easing.animateTime,
+                        easing: Easing.easingType,
                     }
                 ),
                 Animated.timing(
                     this.topLeftValue,
                     {
                         toValue,
-                        duration: animateTime,
-                        easing: easingType,
+                        duration: Easing.animateTime,
+                        easing: Easing.easingType,
                     }
                 ),
             ]),
@@ -156,12 +142,12 @@ class MicButton extends Component {
                             top: 20,
                             bottom: 20,
                         }}
-                        onPress={this.handleAddButtonPress}
+                        onPress={this.handleButtonPress}
                     >
 
                         <FAwesomeIcon
                             name="microphone"
-                            size={30}
+                            size={40}
                             color="#FFF"
                         />
 
@@ -176,11 +162,11 @@ const style = StyleSheet.create({
     bigBubble: {
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: bubbleColor,
-        height: bigBubbleSize,
-        width: bigBubbleSize,
-        borderRadius: bigBubbleSize / 2,
-        top: -30,
+        backgroundColor: 'rgb(40, 155, 238)',
+        height: 60,
+        width: 90,
+        borderRadius: 30,
+        top: -10,
     },
 });
 
