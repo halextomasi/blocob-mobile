@@ -1,21 +1,15 @@
 import React from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
-import { ExpoLinksView } from '@expo/samples';
+import { StyleSheet } from 'react-native';
+import { SafeAreaView } from 'react-navigation';
 
 export default function MainScreen() {
     return (
-        <ScrollView style={styles.container}>
-            {/**
-       * Go ahead and delete ExpoLinksView and replace it with your content;
-       * we just wanted to provide you with some helpful links.
-       */}
-            <ExpoLinksView />
-        </ScrollView>
+        <SafeAreaView style={styles.container} />
     );
 }
 
 MainScreen.navigationOptions = {
-    title: 'Calendário'
+    header: null
 };
 
 const styles = StyleSheet.create({
