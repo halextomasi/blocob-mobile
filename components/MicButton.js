@@ -1,158 +1,175 @@
 // native
 import React, { Component } from 'react';
-import { TouchableOpacity, Animated, Easing, View, StyleSheet } from 'react-native';
+import { TouchableOpacity, View, StyleSheet } from 'react-native';
 import FAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 
-// This is the add button that appears in the middle along with
-// other buttons and their animations
+import { Audio } from 'expo-av'
+import * as FileSystem from 'expo-file-system'
+import * as Permissions from 'expo-permissions'
+
+const recordingOptions = {
+    // android not currently in use. Not getting results from speech to text with .m4a
+    // but parameters are required
+    android: {
+        extension: '.m4a',
+        outputFormat: Audio.RECORDING_OPTION_ANDROID_OUTPUT_FORMAT_MPEG_4,
+        audioEncoder: Audio.RECORDING_OPTION_ANDROID_AUDIO_ENCODER_AAC,
+        sampleRate: 44100,
+        numberOfChannels: 2,
+        bitRate: 128000,
+    },
+    ios: {
+        extension: '.wav',
+        audioQuality: Audio.RECORDING_OPTION_IOS_AUDIO_QUALITY_HIGH,
+        sampleRate: 44100,
+        numberOfChannels: 1,
+        bitRate: 128000,
+        linearPCMBitDepth: 16,
+        linearPCMIsBigEndian: false,
+        linearPCMIsFloat: false,
+    },
+};
+
 class MicButton extends Component {
 
     constructor(props) {
         super(props);
-        this.animatedValue = new Animated.Value(0);
-        this.topLeftValue = new Animated.Value(0);
-        this.topCenterValue = new Animated.Value(0);
-        this.topRightValue = new Animated.Value(0);
+        this.recording = null;
         this.state = {
-            pressed: false,
-        };
-    }
-
-    handleButtonPress = () => {
-        let { pressed } = this.state;
-        if (pressed) {
-            this.animateReverse(0);
+            isFetching: false,
+            isRecording: false
         }
-        else {
-            this.animate(1);
+    }
+
+    deleteRecordingFile = async () => {
+        //console.log("Deleting file");
+        try {
+            const info = await FileSystem.getInfoAsync(this.recording.getURI());
+            await FileSystem.deleteAsync(info.uri);
+        } catch (error) {
+            //console.log("There was an error deleting recording file", error);
         }
-        this.setState({ pressed: !pressed });
     }
 
-    animate = (toValue) => {
-        Animated.stagger(Easing.delay, [
-            Animated.parallel([
-                Animated.timing(
-                    this.animatedValue,
-                    {
-                        toValue,
-                        duration: Easing.animateTime,
-                        easing: Easing.exp,
-                    }
-                ),
-                Animated.timing(
-                    this.topLeftValue,
-                    {
-                        toValue,
-                        duration: Easing.animateTime,
-                        easing: Easing.easingType,
-                    }
-                ),
-            ]),
-            Animated.timing(
-                this.topCenterValue,
-                {
-                    toValue,
-                    duration: Easing.animateTime,
-                    easing: Easing.easingType,
-                }
-            ),
-            Animated.timing(
-                this.topRightValue,
-                {
-                    toValue,
-                    duration: Easing.animateTime,
-                    easing: Easing.easingType,
-                }
-            ),
-        ]).start();
+    getTranscription = async () => {
+        this.setState({ isFetching: true });
+
+        try {
+            const info = await FileSystem.getInfoAsync(this.recording.getURI());
+            const uri = info.uri;
+
+            let uriParts = uri.split('.');
+            let fileType = uriParts[uriParts.length - 1];
+
+            const formData = new FormData();
+
+            formData.append('', {
+                uri,
+                name: `recording.${fileType}`,
+                type: `audio/x-${fileType}`,
+            });
+
+            let options = {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'multipart/form-data',
+                },
+            };
+
+            fetch("https://blocob-backend.azurewebsites.net/api/upload-speech-audio?code=2lnIpdgXlyczigLerzHdeDUFnhJf7/P1rzn9F96JIAk3mmuA73bovw==", options).then(response =>
+                response.json().then(data => ({
+                    data: data,
+                    status: response.status
+                })).then(res => {
+                    console.log(res.status, res.data)
+                }));
+
+            //console.log(response);
+            //console.log(data);
+            //this.setState({ query: data.transcript });
+
+        } catch (error) {
+
+            console.log('There was an error reading file', error);
+            this.stopRecording();
+            this.resetRecording();
+        }
+
+        this.setState({ isFetching: false });
     }
 
-    animateReverse = (toValue) => {
-        Animated.stagger(Easing.delay, [
-            Animated.timing(
-                this.topRightValue,
-                {
-                    toValue,
-                    duration: Easing.animateTime,
-                    easing: Easing.easingType,
-                }
-            ),
-            Animated.timing(
-                this.topCenterValue,
-                {
-                    toValue,
-                    duration: Easing.animateTime,
-                    easing: Easing.easingType,
-                }
-            ),
-            Animated.parallel([
-                Animated.timing(
-                    this.animatedValue,
-                    {
-                        toValue,
-                        duration: Easing.animateTime,
-                        easing: Easing.easingType,
-                    }
-                ),
-                Animated.timing(
-                    this.topLeftValue,
-                    {
-                        toValue,
-                        duration: Easing.animateTime,
-                        easing: Easing.easingType,
-                    }
-                ),
-            ]),
-        ]).start();
+    startRecording = async () => {
+        const { status } = await Permissions.askAsync(Permissions.AUDIO_RECORDING);
+
+        if (status !== 'granted')
+            return;
+
+        console.log(status);
+
+        this.setState({ isRecording: true });
+
+        await Audio.setAudioModeAsync({
+            allowsRecordingIOS: true,
+            interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
+            playsInSilentModeIOS: true,
+            shouldDuckAndroid: true,
+            interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX,
+            playThroughEarpieceAndroid: true,
+            staysActiveInBackground: false,
+        });
+
+        const recording = new Audio.Recording();
+
+        try {
+            await recording.prepareToRecordAsync(recordingOptions);
+            await recording.startAsync();
+        } catch (error) {
+            //console.log(error);
+            this.stopRecording();
+        }
+
+        this.recording = recording;
+    }
+
+    stopRecording = async () => {
+        this.setState({ isRecording: false });
+        try {
+            await this.recording.stopAndUnloadAsync();
+
+        } catch (error) {
+            // Do nothing -- we are already unloaded.
+        }
+    }
+
+    resetRecording = () => {
+        this.deleteRecordingFile();
+        this.recording = null;
+    }
+
+    handleOnPressIn = () => {
+        this.startRecording();
+    }
+
+    handleOnPressOut = () => {
+        this.stopRecording();
+        this.getTranscription();
     }
 
     render() {
-
-        let springValue = Animated.add(Animated.add(this.topLeftValue, this.topRightValue), this.topCenterValue);
-
         return (
             <View>
-                <Animated.View
-                    style={[
-                        style.bigBubble,
-                        {
-                            transform: [
-                                // {
-                                //     rotateZ: springValue.interpolate({
-                                //         inputRange: [0, 1, 2, 3],
-                                //         outputRange: ['-45deg', '-45deg', '0deg', '45deg'],
-                                //     }),
-                                // },
-                                {
-                                    scaleY: springValue.interpolate({
-                                        inputRange: [0, 0.65, 1, 1.65, 2, 2.65, 3],
-                                        outputRange: [1, 1.1, 1, 1.1, 1, 1.1, 1],
-                                    }),
-                                },
-                            ],
-                        },
-                    ]}
-                >
-
-                    <TouchableOpacity
-                        hitSlop={{
-                            left: 20,
-                            right: 20,
-                            top: 20,
-                            bottom: 20,
-                        }}
-                        onPress={this.handleButtonPress}
-                    >
-
-                        <FAwesomeIcon
-                            name="microphone"
-                            size={40}
-                            color="#FFF"
-                        />
-
-                    </TouchableOpacity>
-                </Animated.View>
+                <TouchableOpacity
+                    style={style.bigBubble}
+                    onPressIn={this.handleOnPressIn}
+                    onPressOut={this.handleOnPressOut}>
+                    <FAwesomeIcon
+                        name="microphone"
+                        size={40}
+                        color="#FFF"
+                    />
+                </TouchableOpacity>
             </View>
         );
     }

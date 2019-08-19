@@ -1,23 +1,38 @@
-import React from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
-import { ExpoLinksView } from '@expo/samples';
+import React, { Component } from 'react';
+import { StyleSheet, View } from 'react-native';
 
-export default function MainScreen() {
-    return (
-        <ScrollView style={styles.container}>
+import { Card, Input, Block, Text } from '../../components';
 
-        </ScrollView>
-    );
+import { theme, layout, mocks } from '../../constants';
+
+class MainScreen extends Component {
+    state = {
+
+    }
+
+    componentDidMount() {
+
+    }
+
+    render() {
+        return (
+            <View style={{ paddingTop: 50, flex: 1 }}>
+
+            </View>
+        )
+    }
 }
 
 MainScreen.navigationOptions = {
-    header: null
+    header: null,
 };
 
+export default MainScreen;
+
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        paddingTop: 15,
-        backgroundColor: '#fff',
+    header: {
+        padding: theme.sizes.base * 2.5,
+        paddingHorizontal: theme.sizes.base * 2,
+        paddingBottom: theme.sizes.base * 2
     },
 });

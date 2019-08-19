@@ -1,9 +1,9 @@
 {
   "devToolsPort": 19002,
-  "expoServerPort": 19000,
-  "packagerPort": 19005,
-  "packagerPid": 45784,
-  "expoServerNgrokUrl": "https://uh-fmd.halextomasi.blocob-mobile.exp.direct",
-  "packagerNgrokUrl": "https://packager.uh-fmd.halextomasi.blocob-mobile.exp.direct",
-  "ngrokPid": 45794
+  "expoServerPort": null,
+  "packagerPort": null,
+  "packagerPid": null,
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null
 }

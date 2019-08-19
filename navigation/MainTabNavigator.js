@@ -9,7 +9,7 @@ import VoiceCommandsScreen from '../screens/voicecommands/MainScreen';
 import CalendarStack from '../screens/calendar/navigation/CalendarStack'
 import ProfileStack from '../screens/profile/navigation/ProfileStack'
 
-import Colors from '../constants/Colors';
+import { theme } from '../constants';
 import MicButton from '../components/MicButton';
 
 const size = 24;
