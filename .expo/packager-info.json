@@ -3,7 +3,7 @@
   "expoServerPort": null,
   "packagerPort": null,
   "packagerPid": null,
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null
+  "expoServerNgrokUrl": "https://xb-khv.halextomasi.blocob-mobile.exp.direct",
+  "packagerNgrokUrl": "https://packager.xb-khv.halextomasi.blocob-mobile.exp.direct",
+  "ngrokPid": 9699
 }

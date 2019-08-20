@@ -1,12 +1,12 @@
-import React from 'react';
-import { Platform } from 'react-native';
 import { createStackNavigator } from 'react-navigation';
 
 import MainScreen from '../MainScreen';
+//import ReservationScreen from '../ReservationScreen';
+
 
 const HomeStack = createStackNavigator(
     {
-        Main: MainScreen,
+        MainScreen
     }
 );
 

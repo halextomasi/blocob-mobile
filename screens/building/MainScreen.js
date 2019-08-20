@@ -20,6 +20,7 @@ class MainScreen extends Component {
     }
 
     render() {
+        const { navigation } = this.props;
 
         const { searchFocus, searchString } = this.state;
         const isEditing = searchFocus && searchString;
@@ -66,7 +67,7 @@ class MainScreen extends Component {
                             services.map(service => (
                                 <TouchableOpacity
                                     key={service.name}
-                                //onPress={() => navigation.navigate('Explore', POR)}
+                                    onPress={() => navigation.navigate(service.pageNavigation)}
                                 >
                                     <Card center middle shadow style={styles.service}>
                                         <IconIonicons
@@ -76,7 +77,6 @@ class MainScreen extends Component {
                                         />
                                         <Text medium height={20}>{service.name}</Text>
                                     </Card>
-
                                 </TouchableOpacity>
                             ))
                         }

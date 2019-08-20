@@ -26,6 +26,9 @@ class MainScreen extends Component {
     const isEditing = searchFocus && searchString;
     const { services } = this.state;
 
+    const { navigation } = this.props;
+
+
     return (
       <Block>
         <Block flex={false} center space="between" style={styles.header}>
@@ -64,7 +67,7 @@ class MainScreen extends Component {
             services.map(service => (
               <TouchableOpacity
                 key={service.name}
-              //onPress={() => navigation.navigate('Explore', POR)}
+                onPress={() => navigation.navigate('Explore', POR)}
               >
                 <Card center middle shadow style={styles.service}>
                   <IconIonicons

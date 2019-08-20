@@ -2,7 +2,7 @@ const services = [
   {
     id: 'reservations',
     name: 'Reservas',
-    pageNavigation: '',
+    pageNavigation: 'ReservationScreen',
     badgeIos: 'md-calendar',
     badgeAndroid: 'md-calendar'
   },

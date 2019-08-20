@@ -1,7 +1,8 @@
 // native
 import React, { Component } from 'react';
-import { TouchableOpacity, View, StyleSheet } from 'react-native';
+import { TouchableOpacity, View, StyleSheet, Text } from 'react-native';
 import FAwesomeIcon from 'react-native-vector-icons/FontAwesome';
+import Modal from "react-native-modal";
 
 import { Audio } from 'expo-av'
 import * as FileSystem from 'expo-file-system'
@@ -37,7 +38,8 @@ class MicButton extends Component {
         this.recording = null;
         this.state = {
             isFetching: false,
-            isRecording: false
+            isRecording: false,
+            modalNavigation: false,
         }
     }
 
@@ -48,7 +50,7 @@ class MicButton extends Component {
             await FileSystem.deleteAsync(info.uri);
         } catch (error) {
             //console.log("There was an error deleting recording file", error);
-        }
+        } yarn
     }
 
     getTranscription = async () => {
@@ -78,17 +80,23 @@ class MicButton extends Component {
                 },
             };
 
+            //FAZER TRATATIVA PARA CELULARES ANDROID.
+            //FAZER TRATATIVA PARA CELULARES ANDROID.
+            //FAZER TRATATIVA PARA CELULARES ANDROID.
             fetch("https://blocob-backend.azurewebsites.net/api/upload-speech-audio?code=2lnIpdgXlyczigLerzHdeDUFnhJf7/P1rzn9F96JIAk3mmuA73bovw==", options).then(response =>
                 response.json().then(data => ({
                     data: data,
                     status: response.status
                 })).then(res => {
                     console.log(res.status, res.data)
+
+                    setTimeout(() => { this.setState({ modalNavigation: true }), 1000 });
+
+
+                    console.log(this.state.modalNavigation);
                 }));
 
-            //console.log(response);
-            //console.log(data);
-            //this.setState({ query: data.transcript });
+            this.setState({ modalNavigation: false })
 
         } catch (error) {
 
@@ -106,7 +114,7 @@ class MicButton extends Component {
         if (status !== 'granted')
             return;
 
-        console.log(status);
+        console.log('Gravando...');
 
         this.setState({ isRecording: true });
 
@@ -117,7 +125,7 @@ class MicButton extends Component {
             shouldDuckAndroid: true,
             interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX,
             playThroughEarpieceAndroid: true,
-            staysActiveInBackground: false,
+            staysActiveInBackground: false
         });
 
         const recording = new Audio.Recording();
@@ -134,6 +142,9 @@ class MicButton extends Component {
     }
 
     stopRecording = async () => {
+
+        console.log('Concluido gravação...');
+
         this.setState({ isRecording: false });
         try {
             await this.recording.stopAndUnloadAsync();
@@ -157,9 +168,27 @@ class MicButton extends Component {
         this.getTranscription();
     }
 
+    _renderButton = (text, onPress) => (
+        <TouchableOpacity onPress={onPress}>
+            <View style={style.button}>
+                <Text>{text}</Text>
+            </View>
+        </TouchableOpacity>
+    );
+
+    _renderModalContent = () => (
+        <View style={style.modalContent}>
+            <Text>Redirecionando para {}!</Text>
+            {this._renderButton('Close', () => this.setState({ modalNavigation: false }))}
+        </View>
+    );
+
     render() {
         return (
             <View>
+                <Modal isVisible={this.state.modalNavigation === true}>
+                    {this._renderModalContent()}
+                </Modal>
                 <TouchableOpacity
                     style={style.bigBubble}
                     onPressIn={this.handleOnPressIn}
@@ -167,8 +196,7 @@ class MicButton extends Component {
                     <FAwesomeIcon
                         name="microphone"
                         size={40}
-                        color="#FFF"
-                    />
+                        color="#FFF" />
                 </TouchableOpacity>
             </View>
         );
@@ -184,6 +212,23 @@ const style = StyleSheet.create({
         width: 90,
         borderRadius: 30,
         top: -10,
+    },
+    button: {
+        backgroundColor: 'lightblue',
+        padding: 12,
+        margin: 16,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 4,
+        borderColor: 'rgba(0, 0, 0, 0.1)',
+    },
+    modalContent: {
+        backgroundColor: 'white',
+        padding: 22,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 4,
+        borderColor: 'rgba(0, 0, 0, 0.1)',
     },
 });
 
