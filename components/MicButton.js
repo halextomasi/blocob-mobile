@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { TouchableOpacity, View, StyleSheet, Text } from 'react-native';
 import FAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import Modal from "react-native-modal";
-
+import axios from 'axios';
 import { Audio } from 'expo-av'
 import * as FileSystem from 'expo-file-system'
 import * as Permissions from 'expo-permissions'
@@ -40,6 +40,7 @@ class MicButton extends Component {
             isFetching: false,
             isRecording: false,
             modalNavigation: false,
+            modalText: ""
         }
     }
 
@@ -71,32 +72,45 @@ class MicButton extends Component {
                 type: `audio/x-${fileType}`,
             });
 
-            let options = {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'multipart/form-data',
-                },
-            };
-
             //FAZER TRATATIVA PARA CELULARES ANDROID.
             //FAZER TRATATIVA PARA CELULARES ANDROID.
             //FAZER TRATATIVA PARA CELULARES ANDROID.
-            fetch("https://blocob-backend.azurewebsites.net/api/upload-speech-audio?code=2lnIpdgXlyczigLerzHdeDUFnhJf7/P1rzn9F96JIAk3mmuA73bovw==", options).then(response =>
-                response.json().then(data => ({
-                    data: data,
-                    status: response.status
-                })).then(res => {
-                    console.log(res.status, res.data)
+            axios.post("https://blocob-backend.azurewebsites.net/api/upload-speech-audio?code=2lnIpdgXlyczigLerzHdeDUFnhJf7/P1rzn9F96JIAk3mmuA73bovw==",
+                formData,
+                {
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'multipart/form-data',
+                    }
+                })
+                .then(response => {
 
-                    setTimeout(() => { this.setState({ modalNavigation: true }), 1000 });
+                    let result = response.data;
+                    console.log(result.Intent);
 
+                    switch (result.Intent) {
+                        case "reservation-intent":
+                            this.setState({ modalText: "Reserva" })
+                            break;
 
-                    console.log(this.state.modalNavigation);
-                }));
+                        case "morador-intent":
+                            this.setState({ modalText: "Morador" })
+                            break;
 
-            this.setState({ modalNavigation: false })
+                        case "finances-intent":
+                            this.setState({ modalText: "Financeiro" })
+                            break;
+
+                        default:
+                            break;
+                    }
+
+                    this.setState({ modalNavigation: true })
+                })
+                .catch(error => {
+                    this.setState({ modalNavigation: false })
+                    console.log(error);
+                });
 
         } catch (error) {
 
@@ -178,7 +192,7 @@ class MicButton extends Component {
 
     _renderModalContent = () => (
         <View style={style.modalContent}>
-            <Text>Redirecionando para {}!</Text>
+            <Text>Redirecionando para {this.state.modalText}!</Text>
             {this._renderButton('Close', () => this.setState({ modalNavigation: false }))}
         </View>
     );

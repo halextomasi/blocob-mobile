@@ -3,23 +3,15 @@ import { Platform } from 'react-native';
 import { createStackNavigator } from 'react-navigation';
 
 import MainScreen from '../MainScreen';
-import BuldingServicesScreen from '../BuldingServicesScreen';
 import ReservationScreen from '../ReservationScreen';
 import ResidentsListScreen from '../ResidentsListScreen';
-//import ResidentInfoScreen from '../ResidentInfoScreen';
-import VotationScreen from '../VotationScreen'
+import ResidentInfoScreen from '../ResidentInfoScreen';
 
 import { theme } from '../../../constants';
 
-
-const BuildingStack = createStackNavigator(
+const VoiceCommandsStack = createStackNavigator(
     {
-        MainScreen,
-        BuldingServicesScreen,
-        VotationScreen,
-        ReservationScreen,
-        ResidentsListScreen,
-        //ResidentInfoScreen
+        MainScreen
     },
     {
         defaultNavigationOptions: {
@@ -43,4 +35,4 @@ const BuildingStack = createStackNavigator(
     }
 );
 
-export default BuildingStack;
+export default VoiceCommandsStack;

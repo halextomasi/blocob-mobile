@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { Animated, KeyboardAvoidingView, Image, StyleSheet, ScrollView, TouchableOpacity } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome';
-import IconIonicons from 'react-native-vector-icons/Ionicons';
+import FeatherIcons from 'react-native-vector-icons/Feather';
+
 
 import { Card, Input, Block, Text } from '../../components';
 
@@ -70,12 +71,12 @@ class MainScreen extends Component {
                                     onPress={() => navigation.navigate(service.pageNavigation)}
                                 >
                                     <Card center middle shadow style={styles.service}>
-                                        <IconIonicons
+                                        <FeatherIcons
                                             name={service.badgeIos}
                                             size={theme.sizes.base * 5}
                                             color={theme.colors.gray2}
                                         />
-                                        <Text medium height={20}>{service.name}</Text>
+                                        <Text medium center height={20}>{service.name}</Text>
                                     </Card>
                                 </TouchableOpacity>
                             ))
@@ -83,8 +84,8 @@ class MainScreen extends Component {
                         <TouchableOpacity>
                             <Card center middle shadow style={styles.service2}>
                                 <Text medium center height={20}>
-                                    <IconIonicons
-                                        name="md-information-circle-outline"
+                                    <FeatherIcons
+                                        name="info"
                                         size={theme.sizes.base}
                                         color={theme.colors.gray2}
                                     />  Ajuda
@@ -110,7 +111,7 @@ export default MainScreen;
 
 const styles = StyleSheet.create({
     header: {
-        padding: theme.sizes.base * 2.5,
+        padding: theme.sizes.base * 3,
         paddingHorizontal: theme.sizes.base * 2,
         paddingBottom: theme.sizes.base * 1.3
     },

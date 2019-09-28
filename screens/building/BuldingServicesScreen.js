@@ -5,7 +5,7 @@ import { Input, Block, Text, Button, Switch } from '../../components';
 
 import { theme, layout, mocks } from '../../constants';
 
-class ReservationScreen extends Component {
+class BuldingServicesScreen extends Component {
 
     state = {
         allDayReservation: false,
@@ -23,40 +23,26 @@ class ReservationScreen extends Component {
         return (
             <Block>
                 <Block flex={false} row space="between" style={styles.header2}>
-                    <Text h3 bold gray2>Faça sua reserva!</Text>
+                    <Text h3 bold gray2>Abertura do Chamado</Text>
                 </Block>
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <Block style={styles.inputs}>
                         <Block row space="between" margin={[5, 0]} style={styles.inputRow}>
                             <Block>
-                                <Input label="Nome da Reserva" style={styles.input} />
-                            </Block>
-                        </Block>
-                        <Block row space="between" margin={[5, 0]} style={styles.inputRow}>
-                            <Block>
-                                <Input
-                                    label="Dia da Reserva"
-                                    style={styles.input} />
-                            </Block>
-                            <Block row center space="between" style={{ marginBottom: theme.sizes.base * 2 }}>
-                                <Text gray2>Diária</Text>
-                                <Switch
-                                    value={this.state.allDayReservation}
-                                    onValueChange={value => this.setState({ allDayReservation: value })}
-                                />
+                                <Input label="Assunto do Chamado" style={styles.input} />
                             </Block>
                         </Block>
                         <Block row space="between" margin={[5, 0]} style={styles.inputRow}>
                             <Block>
                                 <Input
                                     editable={!this.state.allDayReservation}
-                                    label="Início"
+                                    label="Data"
                                     style={styles.input} />
                             </Block>
                             <Block>
                                 <Input
                                     editable={!this.state.allDayReservation}
-                                    label="Fim"
+                                    label="Hora"
                                     style={styles.input} />
                             </Block>
                         </Block>
@@ -67,16 +53,23 @@ class ReservationScreen extends Component {
                                     style={styles.input} />
                             </Block>
                         </Block>
-                        <Block row space="between" margin={[10, 0]} style={styles.inputRow}>
+                        <Block row space="between" margin={[5, 0]} style={styles.inputRow}>
+                            <Block>
+                                <Input
+                                    label="Descrição"
+                                    style={styles.inputBig} />
+                            </Block>
+                        </Block>
+                        {/* <Block row space="between" margin={[10, 0]} style={styles.inputRow}>
                             <Block>
                                 <Text gray2 style={{ marginBottom: 10 }}>Valor</Text>
                                 <Text bold>{'R$100,00'}</Text>
                             </Block>
-                        </Block>
+                        </Block> */}
                         <Block row space="between" margin={[10, 0]} style={styles.inputRow}>
                             <Block>
                                 <Button gradient onpress>
-                                    <Text bold white center> Reservar</Text>
+                                    <Text bold white center> Enviar</Text>
                                 </Button>
                             </Block>
                         </Block>
@@ -87,19 +80,18 @@ class ReservationScreen extends Component {
     }
 }
 
-ReservationScreen.defaultProps = {
+BuldingServicesScreen.defaultProps = {
     //services: mocks.services
 };
 
-ReservationScreen.navigationOptions = {
-    title: 'Reservas',
+BuldingServicesScreen.navigationOptions = {
+    title: 'Chamados Internos',
     headerTitleStyle: {
         fontWeight: 'bold',
     },
 };
 
-
-export default ReservationScreen;
+export default BuldingServicesScreen;
 
 const styles = StyleSheet.create({
     header: {
@@ -110,7 +102,7 @@ const styles = StyleSheet.create({
     header2: {
         //padding: theme.sizes.base * 2,
         paddingHorizontal: theme.sizes.base * 2,
-        paddingBottom: theme.sizes.base * 1.3
+        paddingBottom: theme.sizes.base * 1.2
     },
     search: {
         height: theme.sizes.base * 2,
@@ -155,7 +147,14 @@ const styles = StyleSheet.create({
         borderRadius: 0,
         borderWidth: 0,
         borderBottomColor: theme.colors.gray2,
+        borderBottomWidth: StyleSheet.hairlineWidth
+    },
+    inputBig: {
+        borderRadius: 0,
+        borderWidth: 0,
+        borderBottomColor: theme.colors.gray2,
         borderBottomWidth: StyleSheet.hairlineWidth,
+        height: 100
     },
     toggles: {
         paddingHorizontal: theme.sizes.base * 2,

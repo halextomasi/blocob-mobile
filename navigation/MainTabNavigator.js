@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { createBottomTabNavigator } from 'react-navigation';
-import FAwesomeIcon from 'react-native-vector-icons/FontAwesome';
+import MAIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import HomeStack from '../screens/home/navigation/HomeStack';
 import BuildingStack from '../screens/building/navigation/BuildingStack'
@@ -19,7 +19,7 @@ const RouteConfig = {
     screen: HomeStack,
     navigationOptions: () => ({
       tabBarIcon: ({ tintColor }) => (
-        <FAwesomeIcon
+        <MAIcon
           name="home"
           color={tintColor}
           size={size}
@@ -31,10 +31,10 @@ const RouteConfig = {
     screen: BuildingStack,
     navigationOptions: () => ({
       tabBarIcon: ({ tintColor }) => (
-        <FAwesomeIcon
-          name="building"
+        <MAIcon
+          name="domain"
           color={tintColor}
-          size={size - 4}
+          size={size}
         />
       ),
     }),
@@ -42,19 +42,19 @@ const RouteConfig = {
   VoiceCommands: {
     screen: VoiceCommandsScreen,
     navigationOptions: () => ({
-      tabBarButtonComponent: () => (
-        <MicButton />
-      ),
+      tabBarButtonComponent: ({ navigation }) => (
+        <MicButton navigation={navigation} />
+      )
     }),
   },
   Calendar: {
     screen: CalendarStack,
     navigationOptions: () => ({
       tabBarIcon: ({ tintColor }) => (
-        <FAwesomeIcon
-          name="calendar"
+        <MAIcon
+          name="calendar-text"
           color={tintColor}
-          size={size - 1}
+          size={size}
         />
       ),
     }),
@@ -63,8 +63,8 @@ const RouteConfig = {
     screen: ProfileStack,
     navigationOptions: () => ({
       tabBarIcon: ({ tintColor }) => (
-        <FAwesomeIcon
-          name="user"
+        <MAIcon
+          name="clipboard-account"
           color={tintColor}
           size={size}
         />
