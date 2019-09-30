@@ -1,24 +1,65 @@
 import React, { Component } from 'react'
 import { StyleSheet, ScrollView, Picker } from 'react-native'
-
+import DatePicker from 'react-native-datepicker'
 import { Input, Block, Text, Button, Switch } from '../../components';
 
 import { theme, layout, mocks } from '../../constants';
+
+import firebase from 'firebase'
 
 class ReservationScreen extends Component {
 
     state = {
         allDayReservation: false,
-        language: 'haxe',
-        firstLanguage: 'java',
-        secondLanguage: 'js'
+        date: new Date(),
+        initHour: new Date(),
+        endHour: new Date(),
+        reservationName: "",
+        buldingPlace: "",
+        listBuildingPlace: [],
+        reservationValue: 0
     }
 
     componentDidMount() {
+        var returnArr = [];
+
+        firebase.database().ref('Cliente/Condominio/Area Comum').once('value', function (snapshot) {
+            snapshot.forEach(function (snapshot) {
+                var item = snapshot.val();
+                item.key = snapshot.key;
+
+                returnArr.push(item);
+            })
+        }).then(() => {
+            this.setState({ listBuildingPlace: returnArr });
+
+            this.trocaValores(returnArr[0].key)
+        });;
+    }
+
+    trocaValores(value) {
+        this.setState({ buldingPlace: value })
+
+        var lista = this.state.listBuildingPlace;
+
+
+        var data = lista.filter(function (item) {
+            return item.key == value;
+        }).map(function (data) {
+            return data;
+        });
+
+        console.log(data);
+
+        this.setState({ reservationValue: data[0].Valor });
+    }
+
+    salvarReservar() {
 
     }
 
     render() {
+        const { listBuildingPlace, reservationValue } = this.state;
 
         return (
             <Block>
@@ -29,51 +70,124 @@ class ReservationScreen extends Component {
                     <Block style={styles.inputs}>
                         <Block row space="between" margin={[5, 0]} style={styles.inputRow}>
                             <Block>
-                                <Input label="Nome da Reserva" style={styles.input} />
+                                <Input onValueChange={(reservationName) => { this.setState({ reservationName }) }} label="Nome da Reserva" style={styles.input} />
                             </Block>
                         </Block>
                         <Block row space="between" margin={[5, 0]} style={styles.inputRow}>
                             <Block>
-                                <Input
-                                    label="Dia da Reserva"
-                                    style={styles.input} />
+                                <Block flex={false} margin={[theme.sizes.base, 0]}>
+                                    <Text gray2>Dia</Text>
+                                    <DatePicker
+                                        date={this.state.date}
+                                        mode="date"
+                                        placeholder="select date"
+                                        format="DD/MM/YYYY"
+                                        minDate={new Date()}
+                                        maxDate="31/12/2019"
+                                        showIcon={false}
+                                        confirmBtnText="Confirmar"
+                                        cancelBtnText="Cancelar"
+                                        customStyles={{
+                                            dateInput: {
+                                                borderLeftWidth: 0,
+                                                borderWidth: StyleSheet.hairlineWidth,
+                                                borderRightWidth: 0,
+                                                borderTopWidth: 0,
+                                                //height: theme.sizes.base * 3,
+                                            }
+                                        }}
+                                        onDateChange={(date) => { this.setState({ date: date }) }}
+                                    />
+                                </Block>
                             </Block>
-                            <Block row center space="between" style={{ marginBottom: theme.sizes.base * 2 }}>
-                                <Text gray2>Diária</Text>
-                                <Switch
-                                    value={this.state.allDayReservation}
-                                    onValueChange={value => this.setState({ allDayReservation: value })}
-                                />
+                            <Block>
+                                <Block flex={false} margin={[theme.sizes.base, 0]}>
+                                    <Text gray2>Diária</Text>
+                                    <Switch
+                                        value={this.state.allDayReservation}
+                                        onValueChange={allDayReservation => this.setState({ allDayReservation })}
+                                    />
+                                </Block>
+                            </Block>
+                        </Block>
+                        <Block row space="between" margin={[5, 0]} style={styles.inputRow}>
+                            <Block flex={true} margin={[theme.sizes.base, 0]}>
+                                <Block>
+                                    <Text gray2>Início</Text>
+                                    <DatePicker
+                                        date={this.state.initHour}
+                                        mode="time"
+                                        disabled={this.state.allDayReservation}
+                                        format="HH:mm"
+                                        showIcon={false}
+                                        confirmBtnText="Confirmar"
+                                        cancelBtnText="Cancelar"
+                                        customStyles={{
+                                            dateInput: {
+                                                borderLeftWidth: 0,
+                                                borderWidth: StyleSheet.hairlineWidth,
+                                                borderRightWidth: 0,
+                                                borderTopWidth: 0
+                                            }
+                                        }}
+                                        onDateChange={(initHour) => { this.setState({ initHour }) }}
+                                    />
+                                </Block>
+                            </Block>
+                            <Block>
+                                <Block flex={true} margin={[theme.sizes.base, 0]}>
+                                    <Text gray2>Fim</Text>
+                                    <DatePicker
+                                        date={this.state.endHour}
+                                        mode="time"
+                                        format="HH:mm"
+                                        disabled={this.state.allDayReservation}
+                                        minDate={this.state.initHour}
+                                        showIcon={false}
+                                        confirmBtnText="Confirmar"
+                                        cancelBtnText="Cancelar"
+                                        customStyles={{
+                                            dateInput: {
+                                                borderLeftWidth: 0,
+                                                borderWidth: StyleSheet.hairlineWidth,
+                                                borderRightWidth: 0,
+                                                borderTopWidth: 0
+                                            }
+                                        }}
+                                        onDateChange={(endHour) => { this.setState({ endHour }) }}
+                                    />
+                                </Block>
                             </Block>
                         </Block>
                         <Block row space="between" margin={[5, 0]} style={styles.inputRow}>
                             <Block>
-                                <Input
-                                    editable={!this.state.allDayReservation}
-                                    label="Início"
-                                    style={styles.input} />
-                            </Block>
-                            <Block>
-                                <Input
-                                    editable={!this.state.allDayReservation}
-                                    label="Fim"
-                                    style={styles.input} />
+                                <Block flex={false} margin={[theme.sizes.base, 0]}>
+                                    <Text gray2>Local</Text>
+                                    <Picker
+                                        selectedValue={this.state.buldingPlace}
+                                        onValueChange={place => this.trocaValores(place)}
+                                        style={{ height: 88 }}
+                                        itemStyle={{ height: 88 }}
+                                        mode="dropdown">
+                                        {
+                                            listBuildingPlace.map(place => (
+                                                <Picker.Item label={place.Nome}
+                                                    key={place.key}
+                                                    value={place.key}
+                                                />
+                                            ))
+                                        }
+                                    </Picker>
+                                </Block>
                             </Block>
                         </Block>
                         <Block row space="between" margin={[5, 0]} style={styles.inputRow}>
-                            <Block>
-                                <Input
-                                    label="Local"
-                                    style={styles.input} />
-                            </Block>
-                        </Block>
-                        <Block row space="between" margin={[10, 0]} style={styles.inputRow}>
                             <Block>
                                 <Text gray2 style={{ marginBottom: 10 }}>Valor</Text>
-                                <Text bold>{'R$100,00'}</Text>
+                                <Text h2 bold>R${reservationValue}</Text>
                             </Block>
                         </Block>
-                        <Block row space="between" margin={[10, 0]} style={styles.inputRow}>
+                        <Block row space="between" margin={[5, 0]} style={styles.inputRow}>
                             <Block>
                                 <Button gradient onpress>
                                     <Text bold white center> Reservar</Text>
@@ -82,7 +196,7 @@ class ReservationScreen extends Component {
                         </Block>
                     </Block>
                 </ScrollView>
-            </Block>
+            </Block >
         )
     }
 }
@@ -97,7 +211,6 @@ ReservationScreen.navigationOptions = {
         fontWeight: 'bold',
     },
 };
-
 
 export default ReservationScreen;
 
@@ -160,9 +273,6 @@ const styles = StyleSheet.create({
     toggles: {
         paddingHorizontal: theme.sizes.base * 2,
     },
-    // header: {
-    //     paddingHorizontal: theme.sizes.base * 2,
-    // },
     avatar: {
         height: theme.sizes.base * 2.2,
         width: theme.sizes.base * 2.2,

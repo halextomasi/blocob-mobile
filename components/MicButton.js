@@ -221,7 +221,7 @@ const style = StyleSheet.create({
     bigBubble: {
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'rgb(40, 155, 238)',
+        backgroundColor: "#00BE68",
         height: 60,
         width: 90,
         borderRadius: 30,

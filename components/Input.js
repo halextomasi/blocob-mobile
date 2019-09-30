@@ -95,7 +95,6 @@ export default class Input extends Component {
           autoCapitalize="none"
           autoCorrect={false}
           keyboardType={inputType}
-          o
           {...props}
         />
         {this.renderToggle()}

@@ -5,7 +5,7 @@ import MAIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import HomeStack from '../screens/home/navigation/HomeStack';
 import BuildingStack from '../screens/building/navigation/BuildingStack'
-import VoiceCommandsScreen from '../screens/voicecommands/MainScreen';
+//import VoiceCommandsScreen from '../screens/voicecommands/MainScreen';
 import CalendarStack from '../screens/calendar/navigation/CalendarStack'
 import ProfileStack from '../screens/profile/navigation/ProfileStack'
 
@@ -40,7 +40,7 @@ const RouteConfig = {
     }),
   },
   VoiceCommands: {
-    screen: VoiceCommandsScreen,
+    screen: CalendarStack,
     navigationOptions: () => ({
       tabBarButtonComponent: ({ navigation }) => (
         <MicButton navigation={navigation} />
@@ -77,10 +77,10 @@ const BottomNavigatorConfig = {
   tabBarOptions: {
     activeTintColor: 'rgb(255,255,255)',
     //activeTintColor: Colors.tabIconSelected,
-    inactiveTintColor: 'rgb(89, 102, 139)',
+    inactiveTintColor: "#4e73df",
     //inactiveTintColor: Colors.tabIconDefault,
     style: {
-      backgroundColor: 'rgb(21, 31, 53)',
+      backgroundColor: "#3f51b5",
     },
     showLabel: false,
   },

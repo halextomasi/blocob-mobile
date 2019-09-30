@@ -49,28 +49,32 @@ const servicesHome = [
     name: 'Serviços',
     pageNavigation: '',
     badgeIos: 'package',
-    badgeAndroid: 'package'
+    badgeAndroid: 'package',
+    fontSize: 0
   },
   {
     id: 'vote',
     name: 'Votação',
     pageNavigation: '',
     badgeIos: 'check-square',
-    badgeAndroid: 'check-square'
+    badgeAndroid: 'check-square',
+    fontSize: 0
   },
   {
     id: 'finances',
-    name: 'Finanças',
+    name: 'Financeiro',
     pageNavigation: '',
     badgeIos: 'dollar-sign',
-    badgeAndroid: 'dollar-sign'
+    badgeAndroid: 'dollar-sign',
+    fontSize: 5
   },
   {
     id: 'chat',
     name: 'Chat',
     pageNavigation: '',
     badgeIos: 'mail',
-    badgeAndroid: 'mail'
+    badgeAndroid: 'mail',
+    fontSize: 20
   }
 ];
 

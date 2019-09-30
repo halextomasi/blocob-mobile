@@ -15,24 +15,18 @@ export default class App extends React.Component {
 
 
   componentDidMount() {
-    // var firebaseConfig = {
-    //   apiKey: "AIzaSyCLE8DZppMmUl9-eikvCGlBBuejPnCCx9o",
-    //   authDomain: "blocob-project.firebaseapp.com",
-    //   databaseURL: "https://blocob-project.firebaseio.com",
-    //   projectId: "blocob-project",
-    //   storageBucket: "",
-    //   messagingSenderId: "1077404714973",
-    //   appId: "1:1077404714973:web:e7635382790814de"
-    // };
+    const firebaseConfig = {
+      apiKey: "AIzaSyBL56oBf-LXjo38-o6Ll_3dVSs0waWmxKM",
+      authDomain: "blocob-db.firebaseapp.com",
+      databaseURL: "https://blocob-db.firebaseio.com",
+      projectId: "blocob-db",
+      storageBucket: "blocob-db.appspot.com",
+      messagingSenderId: "1014517869255",
+      appId: "1:1014517869255:web:ab621e9eeef1a609"
+    };
 
-    // // Initialize Firebase
-    // firebase.initializeApp(firebaseConfig);
-
-    // firebase.database().ref('/reservas').on('value', snapshot => {
-    //   let data = snapshot.val();
-    //   let items = Object.values(data);
-    //   console.log(items);
-    // });
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
   }
 
   handleResourcesAsync = async () => {

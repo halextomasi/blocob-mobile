@@ -103,6 +103,7 @@ class MainScreen extends Component {
                     size={theme.sizes.base * 1.3}
                     color={theme.colors.gray2}
                   />
+                  <Text height={20} style={{ fontSize: 8.5 }} >{service.name}</Text>
                 </Card>
               </TouchableOpacity>
             ))
