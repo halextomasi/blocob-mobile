@@ -44,6 +44,8 @@ class ReservationScreen extends Component {
     }
 
     trocaValores(value) {
+        if (value === "") return;
+
         this.setState({ buldingPlace: value })
 
         var lista = this.state.listBuildingPlace;
@@ -236,6 +238,10 @@ class ReservationScreen extends Component {
                                             style={{ height: 88 }}
                                             itemStyle={{ height: 88 }}
                                             mode="dropdown">
+                                            <Picker.Item label='Selecione'
+                                                key='S'
+                                                value=''
+                                            />
                                             {
                                                 listBuildingPlace.map(place => (
                                                     <Picker.Item label={place.Nome}

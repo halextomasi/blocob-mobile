@@ -5,7 +5,7 @@ import { Card, Input, Block, Text, Button } from '../../components';
 import { theme, layout, mocks } from '../../constants';
 import FeatherIcons from 'react-native-vector-icons/Feather';
 
-
+import firebase from 'firebase'
 
 class MainScreen extends Component {
 
@@ -21,14 +21,34 @@ class MainScreen extends Component {
 
     componentDidMount() {
         this.setState({ profile: this.props.profile });
+
+        var returnArr = [];
+
+        firebase.database().ref('Cliente/Condominio/-LoGSIkzy2lKOU_dyBhn/Usuarios/-LqAIpc6CFG14vquVe_B/').once('value', function (snapshot) {
+            snapshot.forEach(function (snapshot) {
+                var item = snapshot.val();
+                item.key = snapshot.key;
+
+                returnArr.push(item);
+            })
+            console.log(returnArr);
+        }).then(() => {
+            this.setState({ email: returnArr[0] });
+        });;
+    }
+
+    atualizarEmail(text) {
+
+        console.log(text);
+
+        firebase.database().ref('Cliente/Condominio/-LoGSIkzy2lKOU_dyBhn/Usuarios/-LqAIpc6CFG14vquVe_B/').push({
+            email: text
+        });
     }
 
 
     render() {
-
         const { profile } = this.state;
-
-        console.log(mocks.profile);
 
         return (
             <Block>
@@ -54,25 +74,23 @@ class MainScreen extends Component {
                                 <Input
                                     label="Email"
                                     style={styles.input}
-                                    defaultValue={profile.email}
+                                    defaultValue={this.state.email}
                                     onChangeText={text => this.setState({ email: text })}
                                 />
                             </Block>
                         </Block>
-                        <Block row space="between" margin={[10, 0]} style={styles.inputRow}>
+                        <Block row space="between" margin={[5, 0]} style={styles.inputRow}>
                             <Block>
-                                <Input
-                                    label="Email"
-                                    style={styles.input}
-                                    defaultValue={profile}
-                                    onChangeText={text => this.setState({ email: text })}
-                                />
+                                <Button gradient onPress={((text) => this.atualizarEmail(text))}>
+                                    <Text bold white center> Atualizar</Text>
+                                </Button>
                             </Block>
                         </Block>
                     </Block>
 
-                </ScrollView>
-            </Block>
+
+                </ScrollView >
+            </Block >
         );
     }
 }

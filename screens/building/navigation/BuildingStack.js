@@ -6,7 +6,7 @@ import MainScreen from '../MainScreen';
 import BuldingServicesScreen from '../BuldingServicesScreen';
 import ReservationScreen from '../ReservationScreen';
 import ResidentsListScreen from '../ResidentsListScreen';
-//import ResidentInfoScreen from '../ResidentInfoScreen';
+import ResidentInfoScreen from '../ResidentInfoScreen';
 import VotationScreen from '../VotationScreen'
 
 import { theme } from '../../../constants';
@@ -19,7 +19,7 @@ const BuildingStack = createStackNavigator(
         VotationScreen,
         ReservationScreen,
         ResidentsListScreen,
-        //ResidentInfoScreen
+        ResidentInfoScreen
     },
     {
         defaultNavigationOptions: {

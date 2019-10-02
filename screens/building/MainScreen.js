@@ -81,7 +81,7 @@ class MainScreen extends Component {
                                 </TouchableOpacity>
                             ))
                         }
-                        <TouchableOpacity>
+                        {/* <TouchableOpacity>
                             <Card center middle shadow style={styles.service2}>
                                 <Text medium center height={20}>
                                     <FeatherIcons
@@ -91,7 +91,7 @@ class MainScreen extends Component {
                                     />  Ajuda
                                 </Text>
                             </Card>
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
                     </Block>
                 </ScrollView>
             </Block>
@@ -144,6 +144,7 @@ const styles = StyleSheet.create({
     },
     services: {
         flexWrap: 'wrap',
+        padding: theme.sizes.base * 2,
         paddingHorizontal: theme.sizes.base * 2,
         marginBottom: theme.sizes.base * 3.5,
     },

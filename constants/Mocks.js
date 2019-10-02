@@ -29,7 +29,7 @@ const services = [
   },
   {
     id: 'generalServices',
-    name: 'Serviços',
+    name: 'Notificações',
     pageNavigation: '',
     badgeIos: 'package',
     badgeAndroid: 'package'
@@ -46,7 +46,7 @@ const services = [
 const servicesHome = [
   {
     id: 'generalServices',
-    name: 'Serviços',
+    name: 'Notific.',
     pageNavigation: '',
     badgeIos: 'package',
     badgeAndroid: 'package',
@@ -62,7 +62,7 @@ const servicesHome = [
   },
   {
     id: 'finances',
-    name: 'Financeiro',
+    name: 'Financ.',
     pageNavigation: '',
     badgeIos: 'dollar-sign',
     badgeAndroid: 'dollar-sign',
