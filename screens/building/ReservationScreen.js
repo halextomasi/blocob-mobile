@@ -1,29 +1,36 @@
 import React, { Component } from 'react'
-import { StyleSheet, ScrollView, Picker } from 'react-native'
+import { StyleSheet, ScrollView, Picker, View, TouchableOpacity } from 'react-native'
 import DatePicker from 'react-native-datepicker'
 import { Input, Block, Text, Button, Switch } from '../../components';
 
 import { theme, layout, mocks } from '../../constants';
+import Modal from "react-native-modal";
 
 import firebase from 'firebase'
+import moment from "moment";
 
 class ReservationScreen extends Component {
 
     state = {
         allDayReservation: false,
-        date: new Date(),
-        initHour: new Date(),
-        endHour: new Date(),
+        date: moment(new Date()).format("DD/MM/YYYY"),
+        initHour: "00:00",
+        endHour: "23:59",
         reservationName: "",
         buldingPlace: "",
         listBuildingPlace: [],
-        reservationValue: 0
+        reservationValue: 0,
+        modalText: "Tudo Certo",
+        modalTextConcluido: "Reserva Concluída!",
+        modalNavigation: false,
+        modalNavigationConcluido: false,
     }
 
     componentDidMount() {
+
         var returnArr = [];
 
-        firebase.database().ref('Cliente/Condominio/Area Comum').once('value', function (snapshot) {
+        firebase.database().ref('Cliente/Condominio/-LoGSIkzy2lKOU_dyBhn/Bloco/-LoGSInTl2sbaILrluBD/AreaComum').once('value', function (snapshot) {
             snapshot.forEach(function (snapshot) {
                 var item = snapshot.val();
                 item.key = snapshot.key;
@@ -32,8 +39,7 @@ class ReservationScreen extends Component {
             })
         }).then(() => {
             this.setState({ listBuildingPlace: returnArr });
-
-            this.trocaValores(returnArr[0].key)
+            if (returnArr.length > 0) { this.trocaValores(returnArr[0].key) }
         });;
     }
 
@@ -42,27 +48,78 @@ class ReservationScreen extends Component {
 
         var lista = this.state.listBuildingPlace;
 
-
         var data = lista.filter(function (item) {
             return item.key == value;
         }).map(function (data) {
             return data;
         });
 
-        console.log(data);
-
         this.setState({ reservationValue: data[0].Valor });
     }
 
-    salvarReservar() {
+    salvarReserva() {
+        if (this.state.reservationName === "") {
+            this.setState({ modalText: "Campo Nome da Reserva está vazio." });
+            this.setState({ modalNavigation: true });
+            return;
+        }
 
+        const { navigation } = this.props;
+
+        firebase.database().ref('Cliente/Condominio/-LoGSIkzy2lKOU_dyBhn/Reservas').push({
+            NomeReserva: this.state.reservationName,
+            DiaReserva: this.state.date,
+            HoraInicio: this.state.initHour,
+            HoraFinal: this.state.endHour,
+            Local: this.state.buldingPlace,
+            Valor: this.state.reservationValue,
+            Diaria: this.state.allDayReservation
+        });
+
+        this.setState({ modalNavigationConcluido: true });
+
+        setTimeout(() => {
+            this.setState({ modalNavigationConcluido: false });
+            navigation.goBack();
+        }, 2000);
     }
+
+    goBack() {
+        this.props.navigation.goBack();
+    }
+
+    _renderButton = (text, onPress) => (
+        <TouchableOpacity onPress={onPress}>
+            <View style={styles.button}>
+                <Text>{text}</Text>
+            </View>
+        </TouchableOpacity>
+    );
+
+    _renderModalContent = () => (
+        <View style={styles.modalContent}>
+            <Text>{this.state.modalText}</Text>
+            {this._renderButton('Fechar', () => this.setState({ modalNavigation: false }))}
+        </View>
+    );
+
+    _renderModalContentConcluido = () => (
+        <View style={styles.modalContent}>
+            <Text h2>{this.state.modalTextConcluido}</Text>
+        </View>
+    );
 
     render() {
         const { listBuildingPlace, reservationValue } = this.state;
 
         return (
             <Block>
+                <Modal isVisible={this.state.modalNavigation === true}>
+                    {this._renderModalContent()}
+                </Modal>
+                <Modal isVisible={this.state.modalNavigationConcluido === true}>
+                    {this._renderModalContentConcluido()}
+                </Modal>
                 <Block flex={false} row space="between" style={styles.header2}>
                     <Text h3 bold gray2>Faça sua reserva!</Text>
                 </Block>
@@ -70,7 +127,7 @@ class ReservationScreen extends Component {
                     <Block style={styles.inputs}>
                         <Block row space="between" margin={[5, 0]} style={styles.inputRow}>
                             <Block>
-                                <Input onValueChange={(reservationName) => { this.setState({ reservationName }) }} label="Nome da Reserva" style={styles.input} />
+                                <Input onChangeText={(name) => { this.setState({ reservationName: name }) }} label="Nome da Reserva" style={styles.input} />
                             </Block>
                         </Block>
                         <Block row space="between" margin={[5, 0]} style={styles.inputRow}>
@@ -80,7 +137,7 @@ class ReservationScreen extends Component {
                                     <DatePicker
                                         date={this.state.date}
                                         mode="date"
-                                        placeholder="select date"
+                                        placeholder="Dia"
                                         format="DD/MM/YYYY"
                                         minDate={new Date()}
                                         maxDate="31/12/2019"
@@ -189,7 +246,7 @@ class ReservationScreen extends Component {
                         </Block>
                         <Block row space="between" margin={[5, 0]} style={styles.inputRow}>
                             <Block>
-                                <Button gradient onpress>
+                                <Button gradient onPress={() => this.salvarReserva()}>
                                     <Text bold white center> Reservar</Text>
                                 </Button>
                             </Block>
@@ -298,5 +355,22 @@ const styles = StyleSheet.create({
     },
     toggles: {
         paddingHorizontal: theme.sizes.base * 2,
-    }
+    },
+    button: {
+        backgroundColor: 'lightblue',
+        padding: 12,
+        margin: 16,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 4,
+        borderColor: 'rgba(0, 0, 0, 0.1)',
+    },
+    modalContent: {
+        backgroundColor: 'white',
+        padding: 22,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 4,
+        borderColor: 'rgba(0, 0, 0, 0.1)',
+    },
 });

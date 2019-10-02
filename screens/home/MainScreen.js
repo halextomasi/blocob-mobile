@@ -67,28 +67,7 @@ class MainScreen extends Component {
             <Text h1 gray semibold> B</Text>
           </Text>
         </Block>
-        <Block flex={false} center space="between" style={styles.header2}>
-          <Block middle animated flex={searchFocus} style={styles.search}>
-            <Input
-              placeholder="Digite o que você quer fazer..."
-              placeholderTextColor={theme.colors.gray2}
-              style={styles.searchInput}
-              onChangeText={text => this.setState({ searchString: text })}
-              value={searchString}
-              onRightPress={() => isEditing ? this.setState({ searchString: null }) : null}
-              rightStyle={styles.searchRight}
-              rightLabel={
-                <Icon
-                  name={isEditing ? "close" : "search"}
-                  size={theme.sizes.base / 1.6}
-                  color={theme.colors.gray2}
-                  style={styles.searchIcon}
-                />
-              }
-            />
-          </Block>
-        </Block>
-        <Block flex={false} row space="between" style={styles.header}>
+        <Block flex={false} row space="between" style={styles.header2}>
           <Text h3 bold gray2>atalhos</Text>
         </Block>
         <Block flex={0.5} row space="between" style={styles.services}>

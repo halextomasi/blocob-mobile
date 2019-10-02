@@ -78,6 +78,19 @@ const servicesHome = [
   }
 ];
 
+const profile = {
+  username: 'react-ui-kit',
+  location: 'Europe',
+  email: 'contact@react-ui-kit.com',
+  avatar: require('../assets/images/avatar.png'),
+  budget: 1000,
+  monthly_cap: 5000,
+  notifications: true,
+  newsletter: false,
+  name: "Shirley Silva",
+  apartament: "Apto 138 - Bloco C"
+};
+
 const residents = [
   {
     id: 1,
@@ -144,5 +157,6 @@ export {
   services,
   servicesHome,
   residents,
-  avisos
+  avisos,
+  profile
 }
