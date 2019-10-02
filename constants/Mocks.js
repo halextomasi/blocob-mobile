@@ -71,7 +71,7 @@ const servicesHome = [
   {
     id: 'chat',
     name: 'Chat',
-    pageNavigation: '',
+    pageNavigation: 'ChatScreen',
     badgeIos: 'mail',
     badgeAndroid: 'mail',
     fontSize: 20

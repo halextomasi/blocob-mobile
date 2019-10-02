@@ -75,6 +75,7 @@ class MainScreen extends Component {
             services.map(service => (
               <TouchableOpacity
                 key={service.name}
+                onPress={() => navigation.navigate(service.pageNavigation)}
               >
                 <Card center middle shadow style={styles.service}>
                   <FeatherIcons
@@ -97,11 +98,7 @@ class MainScreen extends Component {
               {news.map(obj => (
                 <TouchableOpacity
                   activeOpacity={0.8}
-                  key={`request-${obj.id}`}
-                  onPress={() => navigation.navigate("ResidentInfoScreen",
-                    {
-                      residentId: obj.id
-                    })}>
+                  key={`request-${obj.id}`}>
                   {this.renderRequest(obj)}
                 </TouchableOpacity>
               ))}
@@ -109,7 +106,7 @@ class MainScreen extends Component {
           </ScrollView>
         </Block>
 
-      </Block>
+      </Block >
     )
   }
 }

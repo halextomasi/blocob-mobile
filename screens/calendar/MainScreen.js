@@ -37,7 +37,6 @@ class MainScreen extends React.Component {
                 returnArr.push(item);
             })
         }).then(() => {
-            console.log(returnArr);
             this.setState({ reservas: returnArr });
             //if (returnArr.length > 0) { this.trocaValores(returnArr[0].key) }
         });;
@@ -58,7 +57,7 @@ class MainScreen extends React.Component {
             this.setState({ reservas: returnArr });
             //if (returnArr.length > 0) { this.trocaValores(returnArr[0].key) }
         });;
-    }
+    } x
 
     renderRequest(request) {
         return (

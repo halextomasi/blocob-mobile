@@ -13,9 +13,8 @@ export default class App extends React.Component {
     isLoadingComplete: false
   }
 
-
   componentDidMount() {
-    const firebaseConfig = {
+    var firebaseConfig = {
       apiKey: "AIzaSyBL56oBf-LXjo38-o6Ll_3dVSs0waWmxKM",
       authDomain: "blocob-db.firebaseapp.com",
       databaseURL: "https://blocob-db.firebaseio.com",
@@ -24,9 +23,9 @@ export default class App extends React.Component {
       messagingSenderId: "1014517869255",
       appId: "1:1014517869255:web:ab621e9eeef1a609"
     };
-
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
   }
 
   handleResourcesAsync = async () => {

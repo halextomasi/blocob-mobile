@@ -1,12 +1,12 @@
 import { createStackNavigator } from 'react-navigation';
 
 import MainScreen from '../MainScreen';
-//import ReservationScreen from '../ReservationScreen';
-
+import ChatScreen from '../ChatScreen';
 
 const HomeStack = createStackNavigator(
     {
-        MainScreen
+        MainScreen,
+        ChatScreen
     }
 );
 
