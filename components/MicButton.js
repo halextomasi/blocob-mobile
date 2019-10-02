@@ -58,6 +58,7 @@ class MicButton extends Component {
         this.setState({ isFetching: true });
 
         try {
+            console.log(this.recording.getURI())
             const info = await FileSystem.getInfoAsync(this.recording.getURI());
             const uri = info.uri;
 
@@ -75,7 +76,7 @@ class MicButton extends Component {
             //FAZER TRATATIVA PARA CELULARES ANDROID.
             //FAZER TRATATIVA PARA CELULARES ANDROID.
             //FAZER TRATATIVA PARA CELULARES ANDROID.
-            axios.post("https://blocob-backend.azurewebsites.net/api/upload-speech-audio?code=2lnIpdgXlyczigLerzHdeDUFnhJf7/P1rzn9F96JIAk3mmuA73bovw==",
+            axios.post("https://bloco-b-backend.azurewebsites.net/api/upload-speech-audio?code=lCbYa/CFjxJhvjmAshzl1zWkI58WPBx8cblghX8voEppy2ddW8m2gA==",
                 formData,
                 {
                     headers: {
@@ -90,18 +91,19 @@ class MicButton extends Component {
 
                     switch (result.Intent) {
                         case "reservation-intent":
-                            this.setState({ modalText: "Reserva" })
+                            this.setState({ modalText: "Entendi! Você gostaria de fazer uma reserva!" })
                             break;
 
                         case "morador-intent":
-                            this.setState({ modalText: "Morador" })
+                            this.setState({ modalText: "Entendi! Você gostaria de cadastrar um visitante!" })
                             break;
 
                         case "finances-intent":
-                            this.setState({ modalText: "Financeiro" })
+                            this.setState({ modalText: "Entendi! Voce gostaria de ver suas contas!" })
                             break;
 
                         default:
+                            this.setState({ modalText: "Não consegui entender sua solicitação" })
                             break;
                     }
 
@@ -192,7 +194,7 @@ class MicButton extends Component {
 
     _renderModalContent = () => (
         <View style={style.modalContent}>
-            <Text>Redirecionando para {this.state.modalText}!</Text>
+            <Text>{this.state.modalText}</Text>
             {this._renderButton('Close', () => this.setState({ modalNavigation: false }))}
         </View>
     );
