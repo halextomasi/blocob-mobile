@@ -3,13 +3,16 @@ import { Animated, KeyboardAvoidingView, Image, StyleSheet, ScrollView, Touchabl
 import Icon from 'react-native-vector-icons/FontAwesome';
 import FeatherIcons from 'react-native-vector-icons/Feather';
 
+
 import { Card, Input, Block, Text } from '../../components';
 
 import { theme, layout, mocks } from '../../constants';
 
-class VotationScreen extends Component {
+class MainScreen extends Component {
 
     state = {
+        searchFocus: new Animated.Value(0.9),
+        searchString: null,
         services: [],
     }
 
@@ -19,30 +22,75 @@ class VotationScreen extends Component {
 
     render() {
         const { navigation } = this.props;
+
+        const { searchFocus, searchString } = this.state;
+        const isEditing = searchFocus && searchString;
         const { services } = this.state;
 
         return (
             <Block>
-                <Block flex={false} row space="between" style={styles.header}>
-                    <Text h3 bold gray2>Faça sua reserva!</Text>
+                <Block flex={false} center row space="between" style={styles.header}>
+                    <Block middle animated flex={searchFocus} style={styles.search}>
+
+                    <Text h1 center bold gray2>
+                        BLOCO
+                         <Text h1 gray semibold> B</Text>
+                    </Text>
                 </Block>
+
+                <Block flex={false} row space="between" style={styles.header2}>
+                    <Text h3 bold gray2>o que deseja fazer?</Text>
+                </Block>
+
+                <ScrollView
+                    showsVerticalScrollIndicator={false}
+                    style={{ paddingVertical: theme.sizes.base * 2 }}
+                >
+                    <Block flex={false} row space="between" style={styles.services}>
+                        {
+                            services.map(service => (
+                                <TouchableOpacity
+                                    key={service.name}
+                                    onPress={() => navigation.navigate(service.pageNavigation)}
+                                >
+                                    <Card center middle shadow style={styles.service}>
+                                        <FeatherIcons
+                                            name={service.badgeIos}
+                                            size={theme.sizes.base * 5}
+                                            color={theme.colors.gray2}
+                                        />
+                                        <Text medium center height={20}>{service.name}</Text>
+                                    </Card>
+                                </TouchableOpacity>
+                            ))
+                        }
+                        {/* <TouchableOpacity>
+                            <Card center middle shadow style={styles.service2}>
+                                <Text medium center height={20}>
+                                    <FeatherIcons
+                                        name="info"
+                                        size={theme.sizes.base}
+                                        color={theme.colors.gray2}
+                                    />  Ajuda
+                                </Text>
+                            </Card>
+                        </TouchableOpacity> */}
+                    </Block>
+                </ScrollView>
             </Block>
         )
     }
 }
 
-VotationScreen.navigationOptions = {
-    title: 'Votação',
-    headerTitleStyle: {
-        fontWeight: 'bold',
-    },
+MainScreen.navigationOptions = {
+    header: null,
 };
 
-VotationScreen.defaultProps = {
+MainScreen.defaultProps = {
     services: mocks.services
 };
 
-export default VotationScreen;
+export default MainScreen;
 
 const styles = StyleSheet.create({
     header: {
@@ -79,6 +127,7 @@ const styles = StyleSheet.create({
     },
     services: {
         flexWrap: 'wrap',
+        padding: theme.sizes.base * 2,
         paddingHorizontal: theme.sizes.base * 2,
         marginBottom: theme.sizes.base * 3.5,
     },

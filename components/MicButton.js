@@ -94,7 +94,7 @@ class MicButton extends Component {
                             this.setState({ modalText: "Entendi! Você gostaria de fazer uma reserva!" })
                             break;
 
-                        case "morador-intent":
+                        case "visitante-intent":
                             this.setState({ modalText: "Entendi! Você gostaria de cadastrar um visitante!" })
                             break;
 

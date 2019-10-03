@@ -9,7 +9,7 @@ const services = [
   {
     id: 'vote',
     name: 'Votação',
-    pageNavigation: 'VotationScreen',
+    pageNavigation: '',
     badgeIos: 'check-square',
     badgeAndroid: 'check-square'
   },
@@ -30,7 +30,7 @@ const services = [
   {
     id: 'generalServices',
     name: 'Notificações',
-    pageNavigation: '',
+    pageNavigation: 'NotificationScreen',
     badgeIos: 'package',
     badgeAndroid: 'package'
   },
@@ -46,10 +46,10 @@ const services = [
 const servicesHome = [
   {
     id: 'generalServices',
-    name: 'Notific.',
-    pageNavigation: '',
-    badgeIos: 'package',
-    badgeAndroid: 'package',
+    name: 'Visitantes',
+    pageNavigation: 'ResidentsListScreen',
+    badgeIos: 'user-check',
+    badgeAndroid: 'user-check',
     fontSize: 0
   },
   {
@@ -62,7 +62,7 @@ const servicesHome = [
   },
   {
     id: 'finances',
-    name: 'Financ.',
+    name: 'Finanças',
     pageNavigation: '',
     badgeIos: 'dollar-sign',
     badgeAndroid: 'dollar-sign',
@@ -135,6 +135,14 @@ const residents = [
 ];
 
 const avisos = [
+  {
+    id: 3,
+    fullName: "Novo Síndico            Hálex Tarouco Tomasi",
+    cpfNumber: "Roberto Alberto",
+    dataNascimento: "22/10/2019",
+    parentingGrade: "Filha",
+    photoUrl: "https://www.officialcharts.com/media/656636/ed-sheeran-2019-press.jpg"
+  },
   {
     id: 1,
     fullName: "Manutenção Elevador Bloco 1",

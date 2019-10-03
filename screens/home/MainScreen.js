@@ -90,7 +90,7 @@ class MainScreen extends Component {
           }
         </Block>
         <Block flex={false} row space="between" style={styles.header}>
-          <Text h3 bold gray2>avisos</Text>
+          <Text h3 bold gray2>notificações</Text>
         </Block>
         <Block row space="between" style={styles.servicesAlerts}>
           <ScrollView showsVerticalScrollIndicator={false}>

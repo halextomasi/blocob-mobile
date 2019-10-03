@@ -1,11 +1,9 @@
-import React, { Component } from 'react';
-import { Image, StyleSheet, ScrollView, TextInput, TouchableOpacity } from 'react-native'
-
-import { Card, Input, Block, Text, Button } from '../../components';
-import { theme, layout, mocks } from '../../constants';
-import FeatherIcons from 'react-native-vector-icons/Feather';
-
 import firebase from 'firebase'
+import React, { Component } from 'react';
+import Modal from "react-native-modal"
+import { Image, StyleSheet, ScrollView, View, TouchableOpacity } from 'react-native'
+import { Input, Block, Text, Button } from '../../components';
+import { theme, layout, mocks } from '../../constants';
 
 class MainScreen extends Component {
 
@@ -15,8 +13,12 @@ class MainScreen extends Component {
         notifications: true,
         newsletter: false,
         editing: null,
-        email: null,
+        email: "",
         profile: {},
+        modalText: "Campo E-Mail está vazio.",
+        modalTextConcluido: "Informações Salvas!",
+        modalNavigation: false,
+        modalNavigationConcluido: false,
     }
 
     componentDidMount() {
@@ -31,27 +33,63 @@ class MainScreen extends Component {
 
                 returnArr.push(item);
             })
-            console.log(returnArr);
         }).then(() => {
             this.setState({ email: returnArr[0] });
         });;
     }
 
-    atualizarEmail(text) {
+    atualizarEmail() {
+        const { email } = this.state;
 
-        console.log(text);
+        if (email === "") {
+            this.setState({ modalText: "Campo E-Mail está vazio." });
+            this.setState({ modalNavigation: true });
+            return;
+        }
 
-        firebase.database().ref('Cliente/Condominio/-LoGSIkzy2lKOU_dyBhn/Usuarios/-LqAIpc6CFG14vquVe_B/').push({
-            email: text
-        });
+        firebase.database().ref().child('Cliente/Condominio/-LoGSIkzy2lKOU_dyBhn/Usuarios/-LqAIpc6CFG14vquVe_B/')
+            .update({ email: email }).catch((error) => console.log(error));
+
+        this.setState({ modalNavigationConcluido: true });
+
+        setTimeout(() => {
+            this.setState({ modalNavigationConcluido: false });
+        }, 2000);
+
     }
 
+    _renderButton = (text, onPress) => (
+        <TouchableOpacity onPress={onPress}>
+            <View style={styles.button}>
+                <Text>{text}</Text>
+            </View>
+        </TouchableOpacity>
+    );
+
+    _renderModalContent = () => (
+        <View style={styles.modalContent}>
+            <Text>{this.state.modalText}</Text>
+            {this._renderButton('Fechar', () => this.setState({ modalNavigation: false }))}
+        </View>
+    );
+
+    _renderModalContentConcluido = () => (
+        <View style={styles.modalContent}>
+            <Text h2>{this.state.modalTextConcluido}</Text>
+        </View>
+    );
 
     render() {
         const { profile } = this.state;
 
         return (
             <Block>
+                <Modal isVisible={this.state.modalNavigation === true}>
+                    {this._renderModalContent()}
+                </Modal>
+                <Modal isVisible={this.state.modalNavigationConcluido === true}>
+                    {this._renderModalContentConcluido()}
+                </Modal>
                 <Block flex={false} row center space="between" style={styles.header}>
                     <Text size={30} bold gray2>{profile.name}</Text>
                 </Block>
@@ -66,8 +104,7 @@ class MainScreen extends Component {
                 </Block>
                 <ScrollView
                     showsVerticalScrollIndicator={false}
-                    style={{ paddingVertical: theme.sizes.base * 2 }}
-                >
+                    style={{ paddingVertical: theme.sizes.base * 2 }}>
                     <Block style={styles.inputs}>
                         <Block row space="between" margin={[10, 0]} style={styles.inputRow}>
                             <Block>
@@ -81,14 +118,12 @@ class MainScreen extends Component {
                         </Block>
                         <Block row space="between" margin={[5, 0]} style={styles.inputRow}>
                             <Block>
-                                <Button gradient onPress={((text) => this.atualizarEmail(text))}>
+                                <Button gradient onPress={(() => this.atualizarEmail())}>
                                     <Text bold white center> Atualizar</Text>
                                 </Button>
                             </Block>
                         </Block>
                     </Block>
-
-
                 </ScrollView >
             </Block >
         );
@@ -233,5 +268,22 @@ const styles = StyleSheet.create({
     },
     toggles: {
         paddingHorizontal: theme.sizes.base * 2,
-    }
+    },
+    button: {
+        backgroundColor: 'lightblue',
+        padding: 12,
+        margin: 16,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 4,
+        borderColor: 'rgba(0, 0, 0, 0.1)',
+    },
+    modalContent: {
+        backgroundColor: 'white',
+        padding: 22,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 4,
+        borderColor: 'rgba(0, 0, 0, 0.1)',
+    },
 });

@@ -1,35 +1,30 @@
 import {
-    SafeAreaView,
     StyleSheet,
     ScrollView,
-    Image,
     TouchableOpacity,
-    View
+    Image
 } from "react-native";
 
 import React from "react";
 
 import Modal from "react-native-modal";
 
-
 import { Block, Text, Button } from '../../components';
 import { theme, mocks } from '../../constants';
 
 import firebase from 'firebase'
+
 import MAIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-class ResidentsListScreen extends React.Component {
+class MainScreen extends React.Component {
     state = {
-        visitors: [],
-        modalTextConcluido: "Visitante Removido!",
-        modalNavigation: false,
-        modalNavigationConcluido: false,
+        reservas: []
     };
 
     componentDidMount() {
         var returnArr = [];
 
-        firebase.database().ref('Cliente/Condominio/-LoGSIkzy2lKOU_dyBhn/Visitantes').once('value', function (snapshot) {
+        firebase.database().ref('Cliente/Condominio/-LoGSIkzy2lKOU_dyBhn/Notificacao').once('value', function (snapshot) {
             snapshot.forEach(function (snapshot) {
                 var item = snapshot.val();
                 item.key = snapshot.key;
@@ -37,8 +32,8 @@ class ResidentsListScreen extends React.Component {
                 returnArr.push(item);
             })
         }).then(() => {
-            this.setState({ visitors: returnArr });
-            //if (returnArr.length > 0) { this.trocaValores(returnArr[0].key) }
+            console.log(returnArr);
+            this.setState({ reservas: returnArr });
         });;
     }
 
@@ -49,87 +44,38 @@ class ResidentsListScreen extends React.Component {
                     flex={0.25}
                     card
                     column
-                    style={styles.requestStatus}
-                >
-                    <MAIcon
-                        name={request.Genero}
-                        size={theme.sizes.base * 5}
-                        color={theme.colors.gray2}
+                    style={styles.requestStatus}>
+                    <Image
+                        source={{ uri: request.Imagem }}
+                        style={{ flex: 1 }}
                     />
                 </Block>
                 <Block flex={0.75} column middle>
-                    <Text h3 bold style={{ paddingVertical: 8, }}>{request.NomeCompleto}</Text>
+                    <Text h3 bold style={{ paddingVertical: 8, }}>{request.Descricao}</Text>
                     <Text caption semibold>
-                        •  {request.DataValidade} - {request.HoraValidade}
+                        Encarregado: {request.Encarregado}
                     </Text>
                     <Text caption semibold>
-                        •  {request.Observação}
+                        Dia: {request.Dia}
                     </Text>
                 </Block>
             </Block>
         );
     }
 
-    apagarVisitante(text) {
-
-        firebase.database().ref('Cliente/Condominio/-LoGSIkzy2lKOU_dyBhn/Visitantes/' + text).remove().then(() => {
-            var returnArr = [];
-
-            firebase.database().ref('Cliente/Condominio/-LoGSIkzy2lKOU_dyBhn/Visitantes').once('value', function (snapshot) {
-                snapshot.forEach(function (snapshot) {
-                    var item = snapshot.val();
-                    item.key = snapshot.key;
-
-                    returnArr.push(item);
-                })
-            }).then(() => {
-                this.setState({ visitors: returnArr });
-                //if (returnArr.length > 0) { this.trocaValores(returnArr[0].key) }
-            });;
-        });
-
-        this.setState({ modalNavigationConcluido: true });
-
-        setTimeout(() => {
-            this.setState({ modalNavigationConcluido: false });
-        }, 2000);
-    }
-
-    comp
-
-    _renderModalContentConcluido = () => (
-        <View style={styles.modalContent}>
-            <Text h2>{this.state.modalTextConcluido}</Text>
-        </View>
-    );
-
     render() {
 
-        const { requests, navigation } = this.props;
-        const { visitors } = this.state;
+        const { reservas } = this.state;
 
         return (
             <Block>
-                <Modal isVisible={this.state.modalNavigationConcluido === true}>
-                    {this._renderModalContentConcluido()}
-                </Modal>
                 <ScrollView showsVerticalScrollIndicator={false}>
-                    <Block style={styles.inputs}>
-                        <Block row space="between" margin={[5, 0]} style={styles.inputRow}>
-                            <Block>
-                                <Button gradient onPress={() => this.props.navigation.navigate('ResidentInfoScreen')}>
-                                    <Text bold white center> Novo Visitante</Text>
-                                </Button>
-                            </Block>
-                        </Block>
-                    </Block>
                     <Block style={styles.list}>
-                        {visitors.map(visitor => (
+                        {reservas.map(reserva => (
                             <TouchableOpacity
                                 activeOpacity={0.8}
-                                key={`request-${visitor.key}`}
-                                onLongPress={() => this.apagarVisitante(visitor.key)}>
-                                {this.renderRequest(visitor)}
+                                key={`request-${reserva.key}`}>
+                                {this.renderRequest(reserva)}
                             </TouchableOpacity>
                         ))}
                     </Block>
@@ -139,18 +85,18 @@ class ResidentsListScreen extends React.Component {
     }
 }
 
-ResidentsListScreen.defaultProps = {
+MainScreen.defaultProps = {
     requests: mocks.residents,
 };
 
-ResidentsListScreen.navigationOptions = {
-    title: 'Visitantes',
+MainScreen.navigationOptions = {
+    title: 'Notificações',
     headerTitleStyle: {
         fontWeight: 'bold',
     },
 };
 
-export default ResidentsListScreen;
+export default MainScreen;
 
 const styles = StyleSheet.create({
     safe: {

@@ -9,8 +9,6 @@ type Props = {
 };
 
 class ChatScreen extends React.Component<Props> {
-
-
     state = {
         messages: [],
     };
@@ -43,5 +41,12 @@ class ChatScreen extends React.Component<Props> {
         Fire.shared.off();
     }
 }
+
+ChatScreen.navigationOptions = {
+    title: 'Chat Interno',
+    headerTitleStyle: {
+        fontWeight: 'bold',
+    }
+};
 
 export default ChatScreen;

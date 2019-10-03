@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { StyleSheet, ScrollView, Picker, KeyboardAvoidingView, View, TouchableOpacity, Platform } from 'react-native'
 import DatePicker from 'react-native-datepicker'
 
-import { Input, Block, Text, Button, Switch } from '../../components';
+import { Input, Block, Text, Button } from '../../components';
 
 import { theme, layout, mocks } from '../../constants';
 
