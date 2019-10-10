@@ -1,17 +1,22 @@
 import {
-    SafeAreaView,
     StyleSheet,
     ScrollView,
-    Image,
-    TouchableOpacity,
-    View
+    TouchableOpacity
 } from "react-native";
 
+import {
+    BallIndicator,
+    BarIndicator,
+    DotIndicator,
+    MaterialIndicator,
+    PacmanIndicator,
+    PulseIndicator,
+    SkypeIndicator,
+    UIActivityIndicator,
+    WaveIndicator,
+} from 'react-native-indicators';
+
 import React from "react";
-
-import Modal from "react-native-modal";
-
-
 import { Block, Text, Button } from '../../components';
 import { theme, mocks } from '../../constants';
 
@@ -24,6 +29,7 @@ class MainScreen extends React.Component {
         modalTextConcluido: "Visitante Removido!",
         modalNavigation: false,
         modalNavigationConcluido: false,
+        showIndicator: true,
     };
 
     componentDidMount() {
@@ -38,6 +44,8 @@ class MainScreen extends React.Component {
             })
         }).then(() => {
             this.setState({ reservas: returnArr });
+            this.setState({ showIndicator: false });
+
             //if (returnArr.length > 0) { this.trocaValores(returnArr[0].key) }
         });;
     }
@@ -92,7 +100,7 @@ class MainScreen extends React.Component {
 
     render() {
 
-        const { reservas } = this.state;
+        const { reservas, showIndicator } = this.state;
 
         return (
             <Block>
@@ -105,6 +113,7 @@ class MainScreen extends React.Component {
                                 {this.renderRequest(reserva)}
                             </TouchableOpacity>
                         ))}
+                        <DotIndicator animating={showIndicator} color='#3f51b5' />
                     </Block>
                 </ScrollView>
             </Block>

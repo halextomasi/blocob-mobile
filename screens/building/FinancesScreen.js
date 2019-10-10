@@ -25,19 +25,16 @@ import firebase from 'firebase'
 import MAIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Modal from "react-native-modal";
 
-class ResidentsListScreen extends React.Component {
+class FinancesScreen extends React.Component {
     state = {
-        visitors: [],
-        modalTextConcluido: "Visitante Removido!",
-        modalNavigation: false,
-        modalNavigationConcluido: false,
+        bills: [],
         showIndicator: true
     };
 
     componentDidMount() {
         var returnArr = [];
 
-        firebase.database().ref('Cliente/Condominio/-LoGSIkzy2lKOU_dyBhn/Visitantes').once('value', function (snapshot) {
+        firebase.database().ref('Cliente/Condominio/-LoGSIkzy2lKOU_dyBhn/Gastos').once('value', function (snapshot) {
             snapshot.forEach(function (snapshot) {
                 var item = snapshot.val();
                 item.key = snapshot.key;
@@ -46,7 +43,7 @@ class ResidentsListScreen extends React.Component {
             })
         }).then(() => {
             this.setState({ showIndicator: false });
-            this.setState({ visitors: returnArr });
+            this.setState({ bills: returnArr });
         });;
     }
 
@@ -60,83 +57,40 @@ class ResidentsListScreen extends React.Component {
                     style={styles.requestStatus}>
 
                     <MAIcon
-                        name={request.Genero}
+                        name='cash'
                         size={theme.sizes.base * 5}
                         color={theme.colors.gray2} />
 
 
                 </Block>
                 <Block flex={0.75} column middle>
-                    <Text h3 bold style={{ paddingVertical: 8, }}>{request.NomeCompleto}</Text>
+                    <Text h3 bold style={{ paddingVertical: 8, }}>{request.Descricao}</Text>
                     <Text caption semibold>
-                        •  {request.DataValidade} - {request.HoraValidade}
+                        • Data: {request.Data}
                     </Text>
                     <Text caption semibold>
-                        •  {request.Observação}
+                        • Valor: {request.Valor}
                     </Text>
                 </Block>
             </Block>
         );
     }
 
-    apagarVisitante(text) {
-
-        firebase.database().ref('Cliente/Condominio/-LoGSIkzy2lKOU_dyBhn/Visitantes/' + text).remove().then(() => {
-            var returnArr = [];
-
-            firebase.database().ref('Cliente/Condominio/-LoGSIkzy2lKOU_dyBhn/Visitantes').once('value', function (snapshot) {
-                snapshot.forEach(function (snapshot) {
-                    var item = snapshot.val();
-                    item.key = snapshot.key;
-
-                    returnArr.push(item);
-                })
-            }).then(() => {
-                this.setState({ showIndicator: false });
-                this.setState({ visitors: returnArr });
-            });;
-        });
-
-        this.setState({ modalNavigationConcluido: true });
-
-        setTimeout(() => {
-            this.setState({ modalNavigationConcluido: false });
-        }, 2000);
-    }
-
-    _renderModalContentConcluido = () => (
-        <View style={styles.modalContent}>
-            <Text h2>{this.state.modalTextConcluido}</Text>
-        </View>
-    );
-
     render() {
 
-        const { visitors, showIndicator } = this.state;
+        const { bills, showIndicator } = this.state;
 
         return (
             <Block>
-                <Modal isVisible={this.state.modalNavigationConcluido === true}>
-                    {this._renderModalContentConcluido()}
-                </Modal>
+
                 <ScrollView showsVerticalScrollIndicator={false}>
-                    <Block style={styles.inputs}>
-                        <Block row space="between" margin={[5, 0]} style={styles.inputRow}>
-                            <Block>
-                                <Button gradient onPress={() => this.props.navigation.navigate('ResidentInfoScreen')}>
-                                    <Text bold white center> Novo Visitante</Text>
-                                </Button>
-                            </Block>
-                        </Block>
-                    </Block>
                     <Block style={styles.list}>
 
-                        {visitors.map(visitor => (
+                        {bills.map(bill => (
                             <TouchableOpacity
                                 activeOpacity={0.8}
-                                key={`request-${visitor.key}`}
-                                onLongPress={() => this.apagarVisitante(visitor.key)}>
-                                {this.renderRequest(visitor)}
+                                key={`request-${bill.key}`}>
+                                {this.renderRequest(bill)}
                             </TouchableOpacity>
                         ))}
 
@@ -148,18 +102,18 @@ class ResidentsListScreen extends React.Component {
     }
 }
 
-ResidentsListScreen.defaultProps = {
+FinancesScreen.defaultProps = {
     requests: mocks.residents,
 };
 
-ResidentsListScreen.navigationOptions = {
-    title: 'Visitantes',
+FinancesScreen.navigationOptions = {
+    title: 'Finanças',
     headerTitleStyle: {
         fontWeight: 'bold',
     },
 };
 
-export default ResidentsListScreen;
+export default FinancesScreen;
 
 const styles = StyleSheet.create({
     safe: {

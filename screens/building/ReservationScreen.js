@@ -23,7 +23,7 @@ class ReservationScreen extends Component {
         modalText: "Tudo Certo",
         modalTextConcluido: "Reserva Concluída!",
         modalNavigation: false,
-        modalNavigationConcluido: false,
+        modalNavigationConcluido: false
     }
 
     componentDidMount() {

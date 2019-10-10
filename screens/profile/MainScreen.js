@@ -5,6 +5,18 @@ import { Image, StyleSheet, ScrollView, View, TouchableOpacity } from 'react-nat
 import { Input, Block, Text, Button } from '../../components';
 import { theme, layout, mocks } from '../../constants';
 
+import {
+    BallIndicator,
+    BarIndicator,
+    DotIndicator,
+    MaterialIndicator,
+    PacmanIndicator,
+    PulseIndicator,
+    SkypeIndicator,
+    UIActivityIndicator,
+    WaveIndicator,
+} from 'react-native-indicators';
+
 class MainScreen extends Component {
 
     state = {
@@ -19,6 +31,7 @@ class MainScreen extends Component {
         modalTextConcluido: "Informações Salvas!",
         modalNavigation: false,
         modalNavigationConcluido: false,
+        showIndicator: true
     }
 
     componentDidMount() {
@@ -35,6 +48,7 @@ class MainScreen extends Component {
             })
         }).then(() => {
             this.setState({ email: returnArr[0] });
+            this.setState({ showIndicator: false });
         });;
     }
 
@@ -80,7 +94,7 @@ class MainScreen extends Component {
     );
 
     render() {
-        const { profile } = this.state;
+        const { profile, showIndicator } = this.state;
 
         return (
             <Block>
@@ -99,6 +113,7 @@ class MainScreen extends Component {
                         style={styles.avatar}
                     />
                 </Block>
+                <DotIndicator animating={showIndicator} color='#3f51b5' />
                 <Block flex={false} row space="between" style={styles.header}>
                     <Text h3 bold gray2>configurações</Text>
                 </Block>

@@ -9,7 +9,7 @@ const services = [
   {
     id: 'vote',
     name: 'Votação',
-    pageNavigation: '',
+    pageNavigation: 'VotationScreen',
     badgeIos: 'check-square',
     badgeAndroid: 'check-square'
   },
@@ -37,7 +37,7 @@ const services = [
   {
     id: 'finances',
     name: 'Financeiro',
-    pageNavigation: '',
+    pageNavigation: 'FinancesScreen',
     badgeIos: 'dollar-sign',
     badgeAndroid: 'dollar-sign'
   }
@@ -55,7 +55,7 @@ const servicesHome = [
   {
     id: 'vote',
     name: 'Votação',
-    pageNavigation: '',
+    pageNavigation: 'VotationScreen',
     badgeIos: 'check-square',
     badgeAndroid: 'check-square',
     fontSize: 0
@@ -63,7 +63,7 @@ const servicesHome = [
   {
     id: 'finances',
     name: 'Finanças',
-    pageNavigation: '',
+    pageNavigation: 'FinancesScreen',
     badgeIos: 'dollar-sign',
     badgeAndroid: 'dollar-sign',
     fontSize: 5

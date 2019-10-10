@@ -51,7 +51,7 @@ class MicButton extends Component {
             await FileSystem.deleteAsync(info.uri);
         } catch (error) {
             //console.log("There was an error deleting recording file", error);
-        } yarn
+        }
     }
 
     getTranscription = async () => {
@@ -73,9 +73,6 @@ class MicButton extends Component {
                 type: `audio/x-${fileType}`,
             });
 
-            //FAZER TRATATIVA PARA CELULARES ANDROID.
-            //FAZER TRATATIVA PARA CELULARES ANDROID.
-            //FAZER TRATATIVA PARA CELULARES ANDROID.
             axios.post("https://bloco-b-backend.azurewebsites.net/api/upload-speech-audio?code=lCbYa/CFjxJhvjmAshzl1zWkI58WPBx8cblghX8voEppy2ddW8m2gA==",
                 formData,
                 {
@@ -87,7 +84,6 @@ class MicButton extends Component {
                 .then(response => {
 
                     let result = response.data;
-                    console.log(result.Intent);
 
                     switch (result.Intent) {
                         case "reservation-intent":
@@ -103,15 +99,16 @@ class MicButton extends Component {
                             break;
 
                         default:
-                            this.setState({ modalText: "Não consegui entender sua solicitação" })
+                            this.setState({ modalText: "Não consegui entender sua solicitação!" })
                             break;
                     }
 
                     this.setState({ modalNavigation: true })
                 })
                 .catch(error => {
-                    this.setState({ modalNavigation: false })
-                    console.log(error);
+                    this.setState({ modalText: "Não consegui entender sua solicitação!" })
+                    this.setState({ modalNavigation: true })
+                    //console.log(error);
                 });
 
         } catch (error) {
@@ -194,8 +191,8 @@ class MicButton extends Component {
 
     _renderModalContent = () => (
         <View style={style.modalContent}>
-            <Text>{this.state.modalText}</Text>
-            {this._renderButton('Close', () => this.setState({ modalNavigation: false }))}
+            <Text h3>{this.state.modalText}</Text>
+            {this._renderButton('Fechar', () => this.setState({ modalNavigation: false }))}
         </View>
     );
 

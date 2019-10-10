@@ -1,9 +1,9 @@
 {
   "devToolsPort": 19002,
-  "expoServerPort": 19000,
-  "packagerPort": 19001,
-  "packagerPid": 68616,
-  "expoServerNgrokUrl": "https://fe-rps.halex-services.blocob-mobile.exp.direct",
-  "packagerNgrokUrl": "https://packager.fe-rps.halex-services.blocob-mobile.exp.direct",
-  "ngrokPid": 68632
+  "expoServerPort": null,
+  "packagerPort": null,
+  "packagerPid": null,
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null
 }
